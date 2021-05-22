@@ -9,7 +9,7 @@ import kotlin.math.min
 
 class GraphicFaceTracker(mainActivity: MainActivity):Tracker<Face>() {
     private val OPEN_THRESHOLD = 0.85f
-    private val CLOSE_THRESHOLD = 0.2f
+    private val CLOSE_THRESHOLD = 0.1f
     private var mainActivity: MainActivity =mainActivity
     private var state = 0
 
@@ -36,7 +36,7 @@ class GraphicFaceTracker(mainActivity: MainActivity):Tracker<Face>() {
                 if(value > OPEN_THRESHOLD)
                     state =0
                 Log.d("GraphicFaceTracker","value"+value.toString()+"state :"+state.toString() )
-                mainActivity.stopCamera()
+                mainActivity.takePicture()
 
 
                 return

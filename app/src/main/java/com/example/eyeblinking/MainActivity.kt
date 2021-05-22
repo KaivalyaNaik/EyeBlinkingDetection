@@ -23,7 +23,7 @@ import com.google.android.gms.vision.face.LargestFaceFocusingProcessor
 import java.io.IOException
 import java.util.*
 
-class MainActivity : AppCompatActivity(), SurfaceHolder.Callback{
+class MainActivity : AppCompatActivity(), SurfaceHolder.Callback,CameraSource.PictureCallback{
     private lateinit var surfaceHolder: SurfaceHolder
     private lateinit var surfaceView: SurfaceView
     private val neededPermissions = arrayOf(permission.CAMERA)
@@ -123,7 +123,9 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback{
         surfaceHolder.addCallback(this)
     }
 
-
+    fun takePicture(){
+        cameraSource.takePicture(null,this)
+    }
 
 
 
@@ -150,14 +152,15 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback{
         val intent =Intent(this,Success::class.java)
         startActivity(intent)
         Log.d("MainActivity","Stop Camera")
+
+        finish()
+    }
+    override fun surfaceDestroyed(surfaceHolder: SurfaceHolder) {
         val handler =Handler(Looper.getMainLooper())
         handler.post {
             cameraSource.release()
             detector.release()
         }
-        finish()
-    }
-    override fun surfaceDestroyed(surfaceHolder: SurfaceHolder) {
         surfaceHolder.surface.release()
     }
 
@@ -166,6 +169,14 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback{
     companion object {
         const val CAMERA_REQUEST = 101
         var bitmap: Bitmap? = null
+    }
+
+    override fun onPictureTaken(image: ByteArray?) {
+        val intent =Intent(this,PictureDisplay::class.java)
+        intent.putExtra("image",image)
+        startActivity(intent)
+
+        finish()
     }
 
 }

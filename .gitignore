@@ -13,3 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+.idea/codeStyles/Project.xml
+.idea/compiler.xml
+.idea/misc.xml
+
